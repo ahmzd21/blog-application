@@ -62,8 +62,6 @@ Visit `http://localhost:8000` to see your blog application.
 
 ## Deployment
 
-This application is ready to deploy on Railway.app. See the [deployment guide](.gemini/antigravity/brain/cdad62ea-fda3-4154-a0a4-c5db5c232488/implementation_plan.md) for detailed instructions.
-
 Quick start:
 ```bash
 ./railway-setup.sh
