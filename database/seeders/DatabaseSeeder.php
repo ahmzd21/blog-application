@@ -30,7 +30,10 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($categories as $category) {
-            Category::create(['name' => $category, 'slug' => Str::slug($category)]);
+            Category::firstOrCreate(
+                ['slug' => Str::slug($category)],
+                ['name' => $category]
+            );
         }
 
         //Post::factory(50)->create();
