@@ -1,6 +1,9 @@
 [phases.setup]
 nixPkgs = ['php82', 'php82Packages.composer', 'nodejs_20', 'php82Extensions.exif', 'php82Extensions.gd', 'php82Extensions.mbstring', 'php82Extensions.pdo_mysql', 'php82Extensions.bcmath', 'php82Extensions.zip']
 
+[variables]
+COMPOSER_IGNORE_PLATFORM_REQ = 'ext-exif'
+
 [phases.install]
 cmds = ['composer install --no-dev --optimize-autoloader --ignore-platform-req=ext-exif', 'npm install', 'npm run build']
 
