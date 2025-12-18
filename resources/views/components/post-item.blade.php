@@ -1,28 +1,37 @@
-<div class="flex flex-row my-3 p-2">
-    <div class="flex flex-col w-full h-36 p-2 justify-evenly">
-        <a href="#">
-            <h5 class="text-2xl font-semibold tracking-tight text-heading px-1">{{ $post->title }}</h5>
+<div class="group flex flex-col md:flex-row bg-white dark:bg-gray-900 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 hover:border-gold/50 dark:hover:border-gold/50 transition-all duration-300 hover:shadow-lg">
+    <!-- Content -->
+    <div class="flex flex-col flex-1 p-6">
+        <a href="{{ route('post.show', [$post->user->username, $post->slug]) }}" class="block mb-3">
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-gold transition-colors duration-200 line-clamp-2">
+                {{ $post->title }}
+            </h2>
         </a>
-        <p class="mb-2 text-body px-1">{{ Str::words(strip_tags(Str::markdown($post->content)), 24, '...') }}</p>
-        <div class="flex items-center gap-3">
-            <x-primary-button class="w-32">
-                <a href="{{ route('post.show', [$post->user->username, $post->slug]) }}" class="relative flex items-center justify-evenly">
-                    Read more
-                    <svg class="w-4 h-4 ms-1.5 rtl:rotate-180 -me-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/></svg>
-                </a>
-            </x-primary-button>
-            <div class="flex gap-2 text-gray-500 text-sm">
-                <p>{{ $post->created_at->format('M d, Y') }}</p>
-                &bullet;
-                @auth
-                    <x-like-button :post="$post" />
-                @endauth
+        
+        <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2 flex-grow">
+            {{ Str::words(strip_tags($post->content), 24, '...') }}
+        </p>
+
+        <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-100 dark:border-gray-800">
+            <div class="flex items-center gap-3">
+                <x-user-avatar :user="$post->user" size="h-8 w-8" />
+                <div class="text-sm">
+                    <span class="text-gray-900 dark:text-white font-medium">{{ $post->user->name }}</span>
+                    <div class="text-gray-500 dark:text-gray-500">
+                        {{ $post->created_at->format('M d') }} · {{ $post->readTime() }} min
+                    </div>
+                </div>
             </div>
+            
+            @auth
+                <x-like-button :post="$post" />
+            @endauth
         </div>
     </div>
-    <img class="rounded-lg h-36 w-36 object-cover mr-2" src="{{ $post->getFirstMedia()?->getUrl('preview') }}" alt="" />
-</div>
-@if($index != $count - 1)
-    <div class="border-b border-gray-200 w-4/5 mx-auto"></div>
-@endif
 
+    <!-- Image -->
+    @if($post->getFirstMedia())
+        <div class="w-full md:w-48 h-48 md:h-auto flex-shrink-0">
+            <img src="{{ $post->getFirstMedia()->getUrl('preview') }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
+        </div>
+    @endif
+</div>

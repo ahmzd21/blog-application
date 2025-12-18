@@ -9,10 +9,16 @@ export default {
         './resources/views/**/*.blade.php',
     ],
 
+    darkMode: 'class',
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Outfit', ...defaultTheme.fontFamily.sans],
+            },
+            colors: {
+                cream: '#FAFAF9',
+                obsidian: '#050505',
+                gold: '#D4AF37',
             },
         },
     },

@@ -1,5 +1,6 @@
 @props(['post'])
-<button class="flex gap-2" x-data="{
+@if(auth()->check() && !auth()->user()->hasRole('admin'))
+<button class="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-red-500 transition-colors duration-200" x-data="{
     liked: {{ $post->isLikedBy(auth()->user()) ? 'true' : 'false'}},
     likePath() {
         return this.liked ?
@@ -8,19 +9,20 @@
     },
     count: {{ $post->likes()->count() }},
     like() {
-                        this.liked = !this.liked
-                        axios.post('/like/{{ $post->id }}')
-                            .then(res => {
-                                console.log(res.data)
-                                this.count = res.data.count
-                            })
-                            .catch(err => {
-                                console.log(err)
-                            })
-                    }
+        this.liked = !this.liked
+        axios.post('/like/{{ $post->id }}')
+            .then(res => {
+                console.log(res.data)
+                this.count = res.data.count
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
 }" @click="like()">
-    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FF0000">
+    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" :fill="liked ? '#ef4444' : 'currentColor'">
         <path :d="likePath()"/>
     </svg>
-    <p x-text="count"></p>
+    <span x-text="count" class="text-sm font-medium"></span>
 </button>
+@endif

@@ -22,10 +22,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/post/{post}', [PostController::class, 'destroy'])->name('post.destroy');
     Route::post('/follow/{user}', [FollowerController::class, 'follow'])->name('follow');
     Route::post('/like/{post}', [LikeController::class, 'like'])->name('like');
+    Route::post('/posts/{post}/comments', [\App\Http\Controllers\CommentController::class, 'store'])->name('comments.store');
 });
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin', [\App\Http\Controllers\AdminController::class, 'index'])->name('admin.index');
+    Route::get('/admin/users', [\App\Http\Controllers\AdminController::class, 'users'])->name('admin.users.index');
+    Route::delete('/admin/users/{user}', [\App\Http\Controllers\AdminController::class, 'destroyUser'])->name('admin.users.destroy');
+    Route::get('/admin/posts', [\App\Http\Controllers\AdminController::class, 'posts'])->name('admin.posts.index');
+    Route::delete('/admin/posts/{post}', [\App\Http\Controllers\AdminController::class, 'destroyPost'])->name('admin.posts.destroy');
 });
