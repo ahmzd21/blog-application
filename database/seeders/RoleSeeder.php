@@ -35,5 +35,19 @@ class RoleSeeder extends Seeder
         );
 
         $admin->assignRole($roleAdmin);
+
+        // create ahmad user
+        $ahmad = User::firstOrCreate(
+            ['email' => 'ahmad@example.com'],
+            [
+                'name' => 'Ahmad',
+                'username' => 'ahmad',
+                'password' => Hash::make('password'),
+                'email_verified_at' => now(),
+            ]
+        );
+
+        $ahmad->assignRole($roleUser);
+        // $ahmad->assignRole($roleAdmin); // Uncomment if you want Ahmad to be an admin (cannot create posts)
     }
 }
